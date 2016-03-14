@@ -1,0 +1,289 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="Kh_ImprovementSiteModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CustID" />
+          </Key>
+          <Property Name="CustID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CustomerName" Type="nvarchar(max)" />
+          <Property Name="JobNumber" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Departments">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeptName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DeptHead" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employees">
+          <Key>
+            <PropertyRef Name="EmpID" />
+          </Key>
+          <Property Name="EmpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" />
+          <Property Name="LastName" Type="nvarchar(max)" />
+          <Property Name="Email" Type="nvarchar(max)" />
+          <Property Name="DeptName" Type="nvarchar(max)" />
+          <Property Name="Department_DeptID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FormEntries">
+          <Key>
+            <PropertyRef Name="FormID" />
+          </Key>
+          <Property Name="FormID" Type="int" Nullable="false" />
+          <Property Name="Department" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CustomerName" Type="nvarchar(max)" />
+          <Property Name="JobNumber" Type="nvarchar(max)" />
+          <Property Name="SubjectLine" Type="nvarchar(max)" />
+          <Property Name="ProblemMsg" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="SuggestionMsg" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DateEntered" Type="datetime" Nullable="false" />
+          <Property Name="IsAllDept" Type="bit" Nullable="false" />
+          <Property Name="Customer_CustID" Type="int" Nullable="false" />
+          <Property Name="Employee_EmpID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_CustomerFormEntry">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="FormEntries" Type="Self.FormEntries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustID" />
+            </Principal>
+            <Dependent Role="FormEntries">
+              <PropertyRef Name="Customer_CustID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DepartmentEmployee">
+          <End Role="Departments" Type="Self.Departments" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employees" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="DeptID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="Department_DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeFormEntry">
+          <End Role="Employees" Type="Self.Employees" Multiplicity="1" />
+          <End Role="FormEntries" Type="Self.FormEntries" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmpID" />
+            </Principal>
+            <Dependent Role="FormEntries">
+              <PropertyRef Name="Employee_EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Kh_ImprovementSiteModelStoreContainer">
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Departments" EntityType="Self.Departments" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employees" EntityType="Self.Employees" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FormEntries" EntityType="Self.FormEntries" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_CustomerFormEntry" Association="Self.FK_CustomerFormEntry">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="FormEntries" EntitySet="FormEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DepartmentEmployee" Association="Self.FK_DepartmentEmployee">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeFormEntry" Association="Self.FK_EmployeeFormEntry">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="FormEntries" EntitySet="FormEntries" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Kh_ImprovementSiteModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustID" />
+          </Key>
+          <Property Name="CustID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="JobNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="FormEntries" Relationship="Self.FK_CustomerFormEntry" FromRole="Customers" ToRole="FormEntries" />
+        </EntityType>
+        <EntityType Name="Department">
+          <Key>
+            <PropertyRef Name="DeptID" />
+          </Key>
+          <Property Name="DeptID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeptName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DeptHead" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Employees" Relationship="Self.FK_DepartmentEmployee" FromRole="Departments" ToRole="Employees" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmpID" />
+          </Key>
+          <Property Name="EmpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DeptName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Department_DeptID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Department" Relationship="Self.FK_DepartmentEmployee" FromRole="Employees" ToRole="Departments" />
+          <NavigationProperty Name="FormEntries" Relationship="Self.FK_EmployeeFormEntry" FromRole="Employees" ToRole="FormEntries" />
+        </EntityType>
+        <EntityType Name="FormEntry">
+          <Key>
+            <PropertyRef Name="FormID" />
+          </Key>
+          <Property Name="FormID" Type="Int32" Nullable="false" />
+          <Property Name="Department" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CustomerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="JobNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SubjectLine" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ProblemMsg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SuggestionMsg" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DateEntered" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsAllDept" Type="Boolean" Nullable="false" />
+          <Property Name="Customer_CustID" Type="Int32" Nullable="false" />
+          <Property Name="Employee_EmpID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_CustomerFormEntry" FromRole="FormEntries" ToRole="Customers" />
+          <NavigationProperty Name="Employee" Relationship="Self.FK_EmployeeFormEntry" FromRole="FormEntries" ToRole="Employees" />
+        </EntityType>
+        <Association Name="FK_CustomerFormEntry">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="1" />
+          <End Role="FormEntries" Type="Self.FormEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustID" />
+            </Principal>
+            <Dependent Role="FormEntries">
+              <PropertyRef Name="Customer_CustID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_DepartmentEmployee">
+          <End Role="Departments" Type="Self.Department" Multiplicity="1" />
+          <End Role="Employees" Type="Self.Employee" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Departments">
+              <PropertyRef Name="DeptID" />
+            </Principal>
+            <Dependent Role="Employees">
+              <PropertyRef Name="Department_DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EmployeeFormEntry">
+          <End Role="Employees" Type="Self.Employee" Multiplicity="1" />
+          <End Role="FormEntries" Type="Self.FormEntry" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employees">
+              <PropertyRef Name="EmpID" />
+            </Principal>
+            <Dependent Role="FormEntries">
+              <PropertyRef Name="Employee_EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Kh_ImprovementSiteEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Departments" EntityType="Self.Department" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="FormEntries" EntityType="Self.FormEntry" />
+          <AssociationSet Name="FK_CustomerFormEntry" Association="Self.FK_CustomerFormEntry">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="FormEntries" EntitySet="FormEntries" />
+          </AssociationSet>
+          <AssociationSet Name="FK_DepartmentEmployee" Association="Self.FK_DepartmentEmployee">
+            <End Role="Departments" EntitySet="Departments" />
+            <End Role="Employees" EntitySet="Employees" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EmployeeFormEntry" Association="Self.FK_EmployeeFormEntry">
+            <End Role="Employees" EntitySet="Employees" />
+            <End Role="FormEntries" EntitySet="FormEntries" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Kh_ImprovementSiteModelStoreContainer" CdmEntityContainer="Kh_ImprovementSiteEntities">
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="Kh_ImprovementSiteModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="CustID" ColumnName="CustID" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="JobNumber" ColumnName="JobNumber" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Departments">
+            <EntityTypeMapping TypeName="Kh_ImprovementSiteModel.Department">
+              <MappingFragment StoreEntitySet="Departments">
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+                <ScalarProperty Name="DeptHead" ColumnName="DeptHead" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="Kh_ImprovementSiteModel.Employee">
+              <MappingFragment StoreEntitySet="Employees">
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+                <ScalarProperty Name="Department_DeptID" ColumnName="Department_DeptID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FormEntries">
+            <EntityTypeMapping TypeName="Kh_ImprovementSiteModel.FormEntry">
+              <MappingFragment StoreEntitySet="FormEntries">
+                <ScalarProperty Name="FormID" ColumnName="FormID" />
+                <ScalarProperty Name="Department" ColumnName="Department" />
+                <ScalarProperty Name="CustomerName" ColumnName="CustomerName" />
+                <ScalarProperty Name="JobNumber" ColumnName="JobNumber" />
+                <ScalarProperty Name="SubjectLine" ColumnName="SubjectLine" />
+                <ScalarProperty Name="ProblemMsg" ColumnName="ProblemMsg" />
+                <ScalarProperty Name="SuggestionMsg" ColumnName="SuggestionMsg" />
+                <ScalarProperty Name="DateEntered" ColumnName="DateEntered" />
+                <ScalarProperty Name="IsAllDept" ColumnName="IsAllDept" />
+                <ScalarProperty Name="Customer_CustID" ColumnName="Customer_CustID" />
+                <ScalarProperty Name="Employee_EmpID" ColumnName="Employee_EmpID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
